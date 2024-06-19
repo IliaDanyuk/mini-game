@@ -10,7 +10,7 @@
   margin-bottom: 20px;
 }
 
-input {
+.input-time {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -18,7 +18,8 @@ input {
   text-align: center;
 }
 
-button {
+.start-button,
+.restart-button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -28,7 +29,8 @@ button {
   margin-left: 10px;
 }
 
-button:hover {
+.start-button:hover,
+.restart-button:hover {
   background-color: #0056b3;
 }
 
@@ -86,6 +88,17 @@ button:hover {
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  border: none;
+  cursor: pointer;
+  background: none;
+  right: 10px;
+  top: 10px;
+  font-size: 24px;
 }
 
 @media (orientation: portrait) {

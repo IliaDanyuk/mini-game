@@ -1,8 +1,8 @@
 <div class="game-container">
   <div class="header">
     <p>Enter the response time (ms):</p>
-    <input type="number" [(ngModel)]="timeLimit" />
-    <button (click)="startGame()">Start</button>
+    <input class="input-time" type="number" [(ngModel)]="timeLimit" />
+    <button class="start-button" (click)="startGame()">Start</button>
   </div>
   <div class="score-board">
     <span>Player: {{ playerScore }}</span>
@@ -18,9 +18,10 @@
   </div>
 </div>
 
-<div *ngIf="gameOver" class="modal">
+<div *ngIf="modalIsOpen" class="modal">
   <div class="modal-content">
+    <button class="close-button" (click)="closeModal()">×</button>
     <h2>{{ winner }} won!</h2>
-    <button (click)="playAgain()">Play again</button>
+    <button class="restart-button" (click)="startGame()">Play again</button>
   </div>
 </div>
