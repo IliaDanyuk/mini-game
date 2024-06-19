@@ -27,15 +27,16 @@ export class GameComponent {
 
   public playerScore = 0;
   public computerScore = 0;
-  // public remainingTime = 0;
   public timerProgress = 100;
   public timeLimit = 1000;
   public gameOver = false;
   public modalIsOpen = false;
-  public gameOn = false;
   public winner = "";
   public errorMessage = "";
+  public gameOn = false;
+  public hardMode = false;
   private timerSubscription: Subscription | null = null;
+  private currentYellowCellIndex: number | null = null;
 
   startGame() {
     if (!this.timeLimit || this.timeLimit < 100) {
@@ -49,21 +50,20 @@ export class GameComponent {
     this.highlightRandomCell();
   }
 
-  resetGame() {
-    this.resetGrid();
-    this.playerScore = 0;
-    this.computerScore = 0;
-    this.gameOver = false;
-    this.modalIsOpen = false;
-    this.timerProgress = 100;
-  }
-
   handleCellClick(index: number) {
     const cell = this.grid[index];
     if (cell.color === CellColor.Yellow) {
       cell.color = CellColor.Green;
       this.playerScore++;
       this.updateAvailableCells(index);
+      this.checkGameOver();
+      if (!this.gameOver) {
+        this.highlightRandomCell();
+      }
+    } else if (this.hardMode && this.currentYellowCellIndex !== null) {
+      this.grid[this.currentYellowCellIndex].color = CellColor.Red;
+      this.computerScore++;
+      this.updateAvailableCells(this.currentYellowCellIndex);
       this.checkGameOver();
       if (!this.gameOver) {
         this.highlightRandomCell();
@@ -85,30 +85,11 @@ export class GameComponent {
     const cell = this.grid[cellIndex];
 
     cell.color = CellColor.Yellow;
-    this.startTimer();
-    // this.remainingTime = this.timeLimit;
-
-    // const timer = interval(100).subscribe(() => {  // SIMPLE TIMER
-    //   if (this.remainingTime > 0) {
-    //     this.remainingTime -= 100;
-    //   }
-    // });
-
-    setTimeout(() => {
-      if (cell.color === CellColor.Yellow && !this.gameOver) {
-        cell.color = CellColor.Red;
-        this.computerScore++;
-        this.updateAvailableCells(cellIndex);
-        this.checkGameOver();
-        if (!this.gameOver) {
-          this.highlightRandomCell();
-        }
-      }
-      // timer.unsubscribe();
-    }, this.timeLimit);
+    this.currentYellowCellIndex = cellIndex;
+    this.startTimer(cellIndex);
   }
 
-  startTimer() {
+  startTimer(cellIndex: number) {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
@@ -123,6 +104,28 @@ export class GameComponent {
         this.timerSubscription.unsubscribe();
       }
     });
+
+    setTimeout(() => {
+      if (this.grid[cellIndex].color === CellColor.Yellow && !this.gameOver) {
+        this.grid[cellIndex].color = CellColor.Red;
+        this.computerScore++;
+        this.updateAvailableCells(cellIndex);
+        this.checkGameOver();
+        if (!this.gameOver) {
+          this.highlightRandomCell();
+        }
+      }
+    }, this.timeLimit);
+  }
+
+  resetGame() {
+    this.resetGrid();
+    this.playerScore = 0;
+    this.computerScore = 0;
+    this.gameOver = false;
+    this.modalIsOpen = false;
+    this.timerProgress = 100;
+    this.currentYellowCellIndex = null;
   }
 
   resetGrid() {
@@ -143,8 +146,8 @@ export class GameComponent {
     if (this.playerScore >= MAX_SCORE || this.computerScore >= MAX_SCORE) {
       this.gameOver = true;
       this.modalIsOpen = true;
-      this.gameOn = false;
       this.winner = this.playerScore >= MAX_SCORE ? "Player" : "Computer";
+      this.gameOn = false;
       if (this.timerSubscription) {
         this.timerSubscription.unsubscribe();
       }

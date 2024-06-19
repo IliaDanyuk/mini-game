@@ -5,8 +5,14 @@
       class="input-time"
       type="number"
       [(ngModel)]="timeLimit"
+      placeholder="Enter response time (ms)"
+      min="100"
     />
     <button class="start-button" (click)="startGame()">Start</button>
+    <div class="checkbox-container">
+      <input type="checkbox" [(ngModel)]="hardMode" [disabled]="gameOn" />
+      <span for="hardMode">Hard Mode</span>
+    </div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   </div>
   <div class="score-board">
