@@ -8,6 +8,7 @@ enum CellColor {
   Red = "red",
 }
 const MAX_SCORE = 10;
+const GRID_SIZE = 10;
 
 @Component({
   selector: "app-game",
@@ -15,10 +16,13 @@ const MAX_SCORE = 10;
   styleUrls: ["./game.component.css"],
 })
 export class GameComponent {
-  gridSize = 10;
   grid: { color: CellColor }[] = Array.from(
-    { length: this.gridSize * this.gridSize },
+    { length: GRID_SIZE * GRID_SIZE },
     () => ({ color: CellColor.Blue })
+  );
+  availableCells: number[] = Array.from(
+    { length: GRID_SIZE * GRID_SIZE },
+    (_, index) => index
   );
 
   public playerScore = 0;
@@ -47,6 +51,7 @@ export class GameComponent {
     if (cell.color === CellColor.Yellow) {
       cell.color = CellColor.Green;
       this.playerScore++;
+      this.updateAvailableCells(index);
       this.checkGameOver();
     }
   }
@@ -56,14 +61,21 @@ export class GameComponent {
   }
 
   highlightRandomCell() {
-    const randomIndex = Math.floor(Math.random() * this.grid.length);
-    const cell = this.grid[randomIndex];
+    if (this.availableCells.length === 0) {
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * this.availableCells.length);
+    const cellIndex = this.availableCells[randomIndex];
+    const cell = this.grid[cellIndex];
+
     cell.color = CellColor.Yellow;
 
     setTimeout(() => {
       if (cell.color === CellColor.Yellow) {
         cell.color = CellColor.Red;
         this.computerScore++;
+        this.updateAvailableCells(cellIndex);
         this.checkGameOver();
       }
     }, this.timeLimit);
@@ -71,6 +83,16 @@ export class GameComponent {
 
   resetGrid() {
     this.grid.forEach((cell) => (cell.color = CellColor.Blue));
+    this.availableCells = Array.from(
+      { length: GRID_SIZE * GRID_SIZE },
+      (_, index) => index
+    );
+  }
+
+  updateAvailableCells(index: number) {
+    this.availableCells = this.availableCells.filter(
+      (cellIndex) => cellIndex !== index
+    );
   }
 
   checkGameOver() {
@@ -83,14 +105,7 @@ export class GameComponent {
     }
   }
 
-  resetGame() {
-    this.resetGrid();
-    this.playerScore = 0;
-    this.computerScore = 0;
-    this.gameOver = false;
-    this.winner = "";
-    if (this.gameSubscription) {
-      this.gameSubscription.unsubscribe();
-    }
+  playAgain() {
+    this.startGame();
   }
 }
