@@ -1,0 +1,59 @@
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 30px); /* 10 колонок по 30px */
+  grid-template-rows: repeat(10, 30px); /* 10 строк по 30px */
+  grid-gap: 2px;
+  margin-top: 20px;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  background-color: blue;
+  cursor: pointer;
+  /* margin: 5px; */
+}
+
+.cell.yellow {
+  background-color: yellow;
+}
+
+.cell.green {
+  background-color: green;
+}
+
+.cell.red {
+  background-color: red;
+}
+
+.score-board {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin-top: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
