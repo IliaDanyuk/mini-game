@@ -9,14 +9,12 @@
     <span>Компьютер: {{ computerScore }}</span>
   </div>
   <div class="grid">
-    <div *ngFor="let row of grid; let rowIndex = index" class="row">
-      <div
-        *ngFor="let cell of row; let colIndex = index"
-        class="cell"
-        [ngClass]="cell.color"
-        (click)="handleCellClick(rowIndex, colIndex)"
-      ></div>
-    </div>
+    <div
+      *ngFor="let cell of grid; let i = index"
+      class="cell"
+      [ngClass]="getCellClass(i)"
+      (click)="handleCellClick(i)"
+    ></div>
   </div>
 </div>
 

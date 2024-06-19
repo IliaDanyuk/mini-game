@@ -11,8 +11,10 @@ interface Cell {
   styleUrls: ["./game.component.css"],
 })
 export class GameComponent {
-  grid: Cell[][] = Array.from({ length: 10 }, () =>
-    Array.from({ length: 10 }, () => ({ color: "blue" }))
+  gridSize = 10;
+  grid: { color: string }[] = Array.from(
+    { length: this.gridSize * this.gridSize },
+    () => ({ color: "blue" })
   );
 
   public playerScore = 0;
@@ -38,8 +40,8 @@ export class GameComponent {
     console.log(this.grid);
   }
 
-  handleCellClick(rowIndex: number, colIndex: number) {
-    const cell = this.grid[rowIndex][colIndex];
+  handleCellClick(index: number) {
+    const cell = this.grid[index];
     if (cell.color === "yellow") {
       cell.color = "green";
       this.playerScore++;
@@ -47,11 +49,13 @@ export class GameComponent {
     }
   }
 
+  getCellClass(index: number): string {
+    return this.grid[index].color;
+  }
+
   highlightRandomCell() {
-    // this.resetHighlightedCell();
-    const randomRow = Math.floor(Math.random() * 10);
-    const randomCol = Math.floor(Math.random() * 10);
-    const cell = this.grid[randomRow][randomCol];
+    const randomIndex = Math.floor(Math.random() * this.grid.length);
+    const cell = this.grid[randomIndex];
     cell.color = "yellow";
 
     setTimeout(() => {
@@ -74,11 +78,7 @@ export class GameComponent {
   //   }
 
   resetGrid() {
-    for (const row of this.grid) {
-      for (const cell of row) {
-        cell.color = "blue";
-      }
-    }
+    this.grid.forEach((cell) => (cell.color = "blue"));
   }
 
   checkGameOver() {
