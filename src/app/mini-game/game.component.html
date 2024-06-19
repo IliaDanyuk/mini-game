@@ -1,12 +1,12 @@
-<p>Сделать модальное окно для старта</p>
-<p>пофиксить скорость появления новой желтой ячейки</p>
-
 <div class="game-container">
-  <input type="number" [(ngModel)]="timeLimit" placeholder="Enter time in ms" />
-  <button (click)="startGame()">Начать</button>
+  <div class="header">
+    <p>Enter the response time (ms):</p>
+    <input type="number" [(ngModel)]="timeLimit" />
+    <button (click)="startGame()">Start</button>
+  </div>
   <div class="score-board">
-    <span>Игрок: {{ playerScore }}</span>
-    <span>Компьютер: {{ computerScore }}</span>
+    <span>Player: {{ playerScore }}</span>
+    <span>Computer: {{ computerScore }}</span>
   </div>
   <div class="grid">
     <div
@@ -20,7 +20,7 @@
 
 <div *ngIf="gameOver" class="modal">
   <div class="modal-content">
-    <h2>{{ winner }} выиграл!</h2>
-    <button (click)="resetGame()">Играть снова</button>
+    <h2>{{ winner }} won!</h2>
+    <button (click)="resetGame()">Play again</button>
   </div>
 </div>

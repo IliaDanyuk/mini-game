@@ -1,9 +1,13 @@
 import { Component } from "@angular/core";
 import { interval, Subscription } from "rxjs";
 
-interface Cell {
-  color: string;
+enum CellColor {
+  Blue = "blue",
+  Yellow = "yellow",
+  Green = "green",
+  Red = "red",
 }
+const MAX_SCORE = 10;
 
 @Component({
   selector: "app-game",
@@ -12,9 +16,9 @@ interface Cell {
 })
 export class GameComponent {
   gridSize = 10;
-  grid: { color: string }[] = Array.from(
+  grid: { color: CellColor }[] = Array.from(
     { length: this.gridSize * this.gridSize },
-    () => ({ color: "blue" })
+    () => ({ color: CellColor.Blue })
   );
 
   public playerScore = 0;
@@ -36,14 +40,12 @@ export class GameComponent {
     this.gameSubscription = interval(this.timeLimit).subscribe(() => {
       this.highlightRandomCell();
     });
-
-    console.log(this.grid);
   }
 
   handleCellClick(index: number) {
     const cell = this.grid[index];
-    if (cell.color === "yellow") {
-      cell.color = "green";
+    if (cell.color === CellColor.Yellow) {
+      cell.color = CellColor.Green;
       this.playerScore++;
       this.checkGameOver();
     }
@@ -56,35 +58,25 @@ export class GameComponent {
   highlightRandomCell() {
     const randomIndex = Math.floor(Math.random() * this.grid.length);
     const cell = this.grid[randomIndex];
-    cell.color = "yellow";
+    cell.color = CellColor.Yellow;
 
     setTimeout(() => {
-      if (cell.color === "yellow") {
-        cell.color = "red";
+      if (cell.color === CellColor.Yellow) {
+        cell.color = CellColor.Red;
         this.computerScore++;
         this.checkGameOver();
       }
     }, this.timeLimit);
   }
 
-  //   resetHighlightedCell() {
-  //     for (const row of this.grid) {
-  //       for (const cell of row) {
-  //         if (cell.color === "yellow") {
-  //           cell.color = "blue";
-  //         }
-  //       }
-  //     }
-  //   }
-
   resetGrid() {
-    this.grid.forEach((cell) => (cell.color = "blue"));
+    this.grid.forEach((cell) => (cell.color = CellColor.Blue));
   }
 
   checkGameOver() {
-    if (this.playerScore >= 10 || this.computerScore >= 10) {
+    if (this.playerScore >= MAX_SCORE || this.computerScore >= MAX_SCORE) {
       this.gameOver = true;
-      this.winner = this.playerScore >= 10 ? "Игрок" : "Компьютер";
+      this.winner = this.playerScore >= MAX_SCORE ? "Player" : "Computer";
       if (this.gameSubscription) {
         this.gameSubscription.unsubscribe();
       }

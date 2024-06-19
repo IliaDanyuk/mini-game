@@ -1,42 +1,71 @@
 .game-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(10, 30px); /* 10 колонок по 30px */
-  grid-template-rows: repeat(10, 30px); /* 10 строк по 30px */
-  grid-gap: 2px;
-  margin-top: 20px;
+.header {
+  margin-bottom: 20px;
 }
 
-.cell {
-  width: 30px;
-  height: 30px;
-  background-color: blue;
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100px;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
-  /* margin: 5px; */
+  margin-left: 10px;
 }
 
-.cell.yellow {
-  background-color: yellow;
-}
-
-.cell.green {
-  background-color: green;
-}
-
-.cell.red {
-  background-color: red;
+button:hover {
+  background-color: #0056b3;
 }
 
 .score-board {
   display: flex;
   justify-content: space-between;
-  width: 200px;
-  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  grid-template-rows: repeat(10, 40px);
+  gap: 5px;
+  justify-content: center;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  background-color: #0000ff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cell.yellow {
+  background-color: #ffff00;
+}
+
+.cell.green {
+  background-color: #008000;
+}
+
+.cell.red {
+  background-color: #ff0000;
 }
 
 .modal {
@@ -52,8 +81,22 @@
 }
 
 .modal-content {
-  background: white;
+  background: #fff;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (orientation: portrait) {
+  .grid {
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(10, 30px);
+    gap: 5px;
+  }
+
+  .cell {
+    width: 30px;
+    height: 30px;
+  }
 }
