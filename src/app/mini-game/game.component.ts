@@ -33,13 +33,9 @@ export class GameComponent {
   public gameOver = false;
   public modalIsOpen = false;
   public winner = "";
-  private gameSubscription: Subscription | null = null;
   private timerSubscription: Subscription | null = null;
 
   startGame() {
-    if (this.gameSubscription) {
-      this.gameSubscription.unsubscribe();
-    }
     this.resetGrid();
     this.playerScore = 0;
     this.computerScore = 0;
@@ -47,9 +43,7 @@ export class GameComponent {
     this.modalIsOpen = false;
     this.timerProgress = 100;
 
-    this.gameSubscription = interval(this.timeLimit).subscribe(() => {
-      this.highlightRandomCell();
-    });
+    this.highlightRandomCell();
   }
 
   handleCellClick(index: number) {
@@ -59,6 +53,9 @@ export class GameComponent {
       this.playerScore++;
       this.updateAvailableCells(index);
       this.checkGameOver();
+      if (!this.gameOver) {
+        this.highlightRandomCell();
+      }
     }
   }
 
@@ -91,6 +88,9 @@ export class GameComponent {
         this.computerScore++;
         this.updateAvailableCells(cellIndex);
         this.checkGameOver();
+        if (!this.gameOver) {
+          this.highlightRandomCell();
+        }
       }
       // timer.unsubscribe();
     }, this.timeLimit);
@@ -132,9 +132,6 @@ export class GameComponent {
       this.gameOver = true;
       this.modalIsOpen = true;
       this.winner = this.playerScore >= MAX_SCORE ? "Player" : "Computer";
-      if (this.gameSubscription) {
-        this.gameSubscription.unsubscribe();
-      }
       if (this.timerSubscription) {
         this.timerSubscription.unsubscribe();
       }
