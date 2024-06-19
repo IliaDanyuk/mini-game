@@ -27,11 +27,14 @@ export class GameComponent {
 
   public playerScore = 0;
   public computerScore = 0;
+  // public remainingTime = 0;
+  public timerProgress = 100;
   public timeLimit = 1000;
   public gameOver = false;
   public modalIsOpen = false;
   public winner = "";
   private gameSubscription: Subscription | null = null;
+  private timerSubscription: Subscription | null = null;
 
   startGame() {
     if (this.gameSubscription) {
@@ -42,6 +45,7 @@ export class GameComponent {
     this.computerScore = 0;
     this.gameOver = false;
     this.modalIsOpen = false;
+    this.timerProgress = 100;
 
     this.gameSubscription = interval(this.timeLimit).subscribe(() => {
       this.highlightRandomCell();
@@ -72,6 +76,14 @@ export class GameComponent {
     const cell = this.grid[cellIndex];
 
     cell.color = CellColor.Yellow;
+    this.startTimer();
+    // this.remainingTime = this.timeLimit;
+
+    // const timer = interval(100).subscribe(() => {  // SIMPLE TIMER
+    //   if (this.remainingTime > 0) {
+    //     this.remainingTime -= 100;
+    //   }
+    // });
 
     setTimeout(() => {
       if (cell.color === CellColor.Yellow && !this.gameOver) {
@@ -80,7 +92,25 @@ export class GameComponent {
         this.updateAvailableCells(cellIndex);
         this.checkGameOver();
       }
+      // timer.unsubscribe();
     }, this.timeLimit);
+  }
+
+  startTimer() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+
+    this.timerProgress = 100;
+    const step = 100 / (this.timeLimit / 100);
+
+    this.timerSubscription = interval(100).subscribe(() => {
+      if (this.timerProgress > 0) {
+        this.timerProgress -= step;
+      } else {
+        this.timerSubscription.unsubscribe();
+      }
+    });
   }
 
   resetGrid() {
@@ -104,6 +134,9 @@ export class GameComponent {
       this.winner = this.playerScore >= MAX_SCORE ? "Player" : "Computer";
       if (this.gameSubscription) {
         this.gameSubscription.unsubscribe();
+      }
+      if (this.timerSubscription) {
+        this.timerSubscription.unsubscribe();
       }
     }
   }

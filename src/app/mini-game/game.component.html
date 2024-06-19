@@ -1,12 +1,15 @@
 <div class="game-container">
   <div class="header">
-    <p>Enter the response time (ms):</p>
+    <!-- <p>Enter the response time (ms):</p>   SIMPLE TIMER-->
     <input class="input-time" type="number" [(ngModel)]="timeLimit" />
     <button class="start-button" (click)="startGame()">Start</button>
   </div>
   <div class="score-board">
     <span>Player: {{ playerScore }}</span>
     <span>Computer: {{ computerScore }}</span>
+  </div>
+  <div class="timer-bar" *ngIf="!gameOver">
+    <div class="timer-fill" [style.width.%]="timerProgress"></div>
   </div>
   <div class="grid">
     <div
