@@ -32,18 +32,30 @@ export class GameComponent {
   public timeLimit = 1000;
   public gameOver = false;
   public modalIsOpen = false;
+  public gameOn = false;
   public winner = "";
+  public errorMessage = "";
   private timerSubscription: Subscription | null = null;
 
   startGame() {
+    if (!this.timeLimit || this.timeLimit < 100) {
+      this.errorMessage = "Please enter a valid response time (minimum 100 ms)";
+      return;
+    }
+
+    this.errorMessage = "";
+    this.gameOn = true;
+    this.resetGame();
+    this.highlightRandomCell();
+  }
+
+  resetGame() {
     this.resetGrid();
     this.playerScore = 0;
     this.computerScore = 0;
     this.gameOver = false;
     this.modalIsOpen = false;
     this.timerProgress = 100;
-
-    this.highlightRandomCell();
   }
 
   handleCellClick(index: number) {
@@ -131,6 +143,7 @@ export class GameComponent {
     if (this.playerScore >= MAX_SCORE || this.computerScore >= MAX_SCORE) {
       this.gameOver = true;
       this.modalIsOpen = true;
+      this.gameOn = false;
       this.winner = this.playerScore >= MAX_SCORE ? "Player" : "Computer";
       if (this.timerSubscription) {
         this.timerSubscription.unsubscribe();

@@ -1,8 +1,13 @@
 <div class="game-container">
   <div class="header">
-    <!-- <p>Enter the response time (ms):</p>   SIMPLE TIMER-->
-    <input class="input-time" type="number" [(ngModel)]="timeLimit" />
+    <input
+      [disabled]="gameOn"
+      class="input-time"
+      type="number"
+      [(ngModel)]="timeLimit"
+    />
     <button class="start-button" (click)="startGame()">Start</button>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   </div>
   <div class="score-board">
     <span>Player: {{ playerScore }}</span>
