@@ -9,6 +9,7 @@ enum CellColor {
 }
 const MAX_SCORE = 10;
 const GRID_SIZE = 10;
+const TIMER_INTERVAL = 100;
 
 @Component({
   selector: "app-game",
@@ -95,9 +96,9 @@ export class GameComponent {
     }
 
     this.timerProgress = 100;
-    const step = 100 / (this.timeLimit / 100);
+    const step = 100 / (this.timeLimit / TIMER_INTERVAL);
 
-    this.timerSubscription = interval(100).subscribe(() => {
+    this.timerSubscription = interval(TIMER_INTERVAL).subscribe(() => {
       if (this.timerProgress > 0) {
         this.timerProgress -= step;
       } else {
