@@ -6,9 +6,9 @@ import { AppComponent } from "./app.component";
 import { GameComponent } from "./mini-game/game.component";
 
 @NgModule({
-  declarations: [GameComponent],
+  declarations: [AppComponent, GameComponent],
   imports: [BrowserModule, FormsModule],
   providers: [],
-  bootstrap: [GameComponent],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
