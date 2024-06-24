@@ -18,14 +18,9 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "aot": true,
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -42,9 +37,9 @@
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
+              "buildOptimizer": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -67,7 +62,9 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "mini-game:build:production"
+              "browserTarget": "mini-game:build:production",
+              "aot": true,
+              "buildOptimizer": true
             }
           }
         },
@@ -84,13 +81,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         },
@@ -102,9 +94,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -120,6 +110,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "mini-game"
+    }
+  },
+  "defaultProject": "mini-game",
+  "cli": {
+    "analytics": "cc05121b-f6a8-42ba-a5e9-09053c34fb7b"
+  }
 }
